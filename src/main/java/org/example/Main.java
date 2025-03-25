@@ -145,19 +145,24 @@ public class Main {
 
                 if (!members.isEmpty()) {
                     while (true) {
-                        int count = 0;
+                        boolean isNewMemberId = true;
+
+
                         System.out.print("loginId : ");
                         loginId = sc.nextLine().trim();
+
+
                         for (Member member : members) {
                             if (loginId.equals(member.getLoginId())) {
                                 System.out.println("이미 사용된 ID 입니다.");
-                                count = 1;
+                                isNewMemberId = false;
+                                break;
                             }
                         }
-                        if (count == 1) {
-                            continue;
+
+                        if (isNewMemberId) {
+                            break;
                         }
-                        break;
                     }
 
                 } else {
@@ -190,46 +195,34 @@ public class Main {
             } else if (cmd.equals("login")) {
                 String loginId;
                 String loginPw;
+                String loginPwById = "";
                 while (true) {
                     System.out.print("loginId : ");
                     loginId = sc.nextLine().trim();
 
+                    boolean isLoginId = false;
 
-                    int count = 0;
                     for (Member member : members) {
                         if (loginId.equals(member.getLoginId())) {
-
-                            count = 1;
+                            loginPwById = member.getLoginPw();
+                            isLoginId = true;
                             break;
                         }
-
-                    }
-                    if (count == 1) {
-                        break;
-                    } else {
-                        System.out.println("회원가입 되어있지 않은 ID입니다.");
                     }
 
-                }
 
-                while (true) {
+                    if (!isLoginId) {
+                        System.out.println("회원가입 되어있지 않은 ID 입니다.");
+                        continue;
+                    }
                     System.out.print("loginPw : ");
                     loginPw = sc.nextLine().trim();
-                    int count_ps = 0;
-                    for (Member member : members) {
-                        if (loginPw.equals(member.getLoginId())) {
-                            count_ps = 1;
-                            break;
-                        }
-                    }
-                    if (count_ps == 1) {
+                    if (loginPw.equals(loginPwById)) {
                         break;
                     } else {
-                        System.out.println("회원가입 되어있지 않은 PW입니다.");
+                        System.out.println("PW가 틀렸습니다.");
                     }
-
                 }
-
                 System.out.println("로그인 되었습니다.");
 
 
