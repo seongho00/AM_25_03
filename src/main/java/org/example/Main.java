@@ -1,5 +1,9 @@
 package org.example;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -35,7 +39,7 @@ public class Main {
                 System.out.print("내용 : ");
                 String body = sc.nextLine().trim();
 
-                Article article = new Article(id, title, body);
+                Article article = new Article(id, title, body, Time.now());
                 articles.add(article);
 
                 System.out.println(id + "번 글이 작성되었습니다");
@@ -70,6 +74,7 @@ public class Main {
                     continue;
                 }
                 System.out.println("번호 : " + foundArticle.getId());
+                System.out.println("날짜 : " + foundArticle.getDateTime());
                 System.out.println("제목 : " + foundArticle.getTitle());
                 System.out.println("내용 : " + foundArticle.getBody());
 
@@ -138,10 +143,14 @@ class Article {
     private String title;
     private String body;
 
-    public Article(int id, String title, String body) {
+
+    private String dateTime;
+
+    public Article(int id, String title, String body, String dateTime) {
         this.id = id;
         this.title = title;
         this.body = body;
+        this.dateTime = dateTime;
     }
 
     public int getId() {
@@ -164,7 +173,25 @@ class Article {
         return body;
     }
 
+
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
+    }
+
     public void setBody(String body) {
         this.body = body;
+    }
+}
+
+class Time {
+    static String now() {
+        LocalDateTime dateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String dateTimeString = dateTime.format(formatter);
+        return dateTimeString;
     }
 }
