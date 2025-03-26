@@ -9,7 +9,7 @@ public class Article {
     private int memberId;
     private String memberName;
 
-    public Article(int id, String regDate, String updateDate, String title, String body, int memberId ) {
+    public Article(int id, String regDate, String updateDate, String title, String body, int memberId, String memberName) {
         this.id = id;
         this.regDate = regDate;
         this.updateDate = updateDate;
