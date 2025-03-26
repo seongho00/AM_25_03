@@ -2,23 +2,32 @@ package org.example.controller;
 
 import org.example.dto.Article;
 import org.example.Container;
+import org.example.dto.Member;
 import org.example.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ArticleController extends Controller {
     List<Article> articles;
     int lastArticleId = 3;
     String cmd;
+    MemberController memberController;
 
-    public ArticleController() {
+
+    public ArticleController(MemberController memberController) {
         this.articles = new ArrayList<>();
+        this.memberController = memberController;
     }
 
 
     public void doAction(String cmd, String actionMethodName) {
         this.cmd = cmd;
+        if (memberController.getLoginedMember() == null) {
+            System.out.println("로그인이 필요한 서비스입니다.");
+            return;
+        }
 
         switch (actionMethodName) {
             case "write":
@@ -52,8 +61,9 @@ public class ArticleController extends Controller {
         String title = Container.getSc().nextLine().trim();
         System.out.print("내용 : ");
         String body = Container.getSc().nextLine().trim();
+        Member member = memberController.getLoginedMember();
 
-        Article article = new Article(id, regDate, updateDate, title, body);
+        Article article = new Article(id, regDate, updateDate, title, body, member);
         articles.add(article);
 
         System.out.println(id + "번 글이 작성되었습니다");
@@ -118,31 +128,44 @@ public class ArticleController extends Controller {
 
 
     public void doDelete() {
-        System.out.println("==게시글 삭제==");
 
         int id = Integer.parseInt(cmd.split(" ")[2]);
 
         Article foundArticle = getArticleById(id);
 
+
         if (foundArticle == null) {
             System.out.println("해당 게시글은 없습니다");
             return;
         }
+
+        if (!Objects.equals(foundArticle.getMember(), memberController.getLoginedMember())) {
+            System.out.println("너가 작성한 게시글이 아니야");
+            return;
+        }
+        System.out.println("==게시글 삭제==");
+
         articles.remove(foundArticle);
         System.out.println(id + "번 게시글이 삭제되었습니다");
     }
 
     public void doModify() {
-        System.out.println("==게시글 수정==");
 
         int id = Integer.parseInt(cmd.split(" ")[2]);
 
         Article foundArticle = getArticleById(id);
 
+
         if (foundArticle == null) {
             System.out.println("해당 게시글은 없습니다");
             return;
         }
+
+        if (!Objects.equals(foundArticle.getMember(), memberController.getLoginedMember())) {
+            System.out.println("너가 작성한 게시글이 아니야");
+            return;
+        }
+        System.out.println("==게시글 수정==");
         System.out.println("기존 제목 : " + foundArticle.getTitle());
         System.out.println("기존 내용 : " + foundArticle.getBody());
         System.out.print("새 제목 : ");
@@ -169,9 +192,9 @@ public class ArticleController extends Controller {
 
     public void makeTestData() {
         System.out.println("==테스트 데이터 생성==");
-        articles.add(new Article(1, "2024-12-12 12:12:12", "2024-12-12 12:12:12", "제목123", "내용1"));
-        articles.add(new Article(2, Util.getNowStr(), Util.getNowStr(), "제목27", "내용2"));
-        articles.add(new Article(3, Util.getNowStr(), Util.getNowStr(), "제목1233", "내용3"));
+        articles.add(new Article(1, "2024-12-12 12:12:12", "2024-12-12 12:12:12", "제목123", "내용1", memberController.getMembers().get(0)));
+        articles.add(new Article(2, Util.getNowStr(), Util.getNowStr(), "제목27", "내용2", memberController.getMembers().get(1)));
+        articles.add(new Article(3, Util.getNowStr(), Util.getNowStr(), "제목1233", "내용3", memberController.getMembers().get(2)));
 
     }
 }

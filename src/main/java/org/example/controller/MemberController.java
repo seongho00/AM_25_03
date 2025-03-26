@@ -9,24 +9,33 @@ import java.util.List;
 
 public class MemberController extends Controller {
 
-    public boolean getIsLoginStatus() {
-        return loginStatus;
+    public List<Member> getMembers() {
+        return members;
+    }
+
+    public Member getLoginedMember() {
+        return loginedMember;
+    }
+
+    private boolean isLogined() {
+        return loginedMember != null;
     }
 
     List<Member> members;
-    private boolean loginStatus = false;
-    int lastRegId = 3;
-    String cmd;
+    private int lastRegId = 3;
+    private String cmd;
+    private Member loginedMember;
+
 
     public void doAction(String cmd, String actionMethodName) {
         this.cmd = cmd;
 
         switch (actionMethodName) {
             case "login":
-                login();
+                doLogin();
                 break;
             case "logout":
-                logout();
+                doLogout();
                 break;
             case "join":
                 doJoin();
@@ -45,48 +54,53 @@ public class MemberController extends Controller {
     }
 
 
-    public void logout() {
+    public void doLogout() {
+        if (!isLogined()) {
+            System.out.println("이미 로그아웃중");
+            return;
+        }
         System.out.println("로그아웃되었습니다.");
-        loginStatus = false;
     }
 
 
-    public void login() {
-        String loginId;
-        String loginPw;
-        String loginPwById = "";
-        while (true) {
-            System.out.print("loginId : ");
-            loginId = Container.getSc().nextLine().trim();
+    public void doLogin() {
+        if (isLogined()) {
+            System.out.println("이미 로그인중");
+            return;
+        }
 
-            boolean isLoginId = false;
 
-            for (Member member : members) {
-                if (loginId.equals(member.getLoginId())) {
-                    loginPwById = member.getLoginPw();
-                    isLoginId = true;
-                    break;
-                }
-            }
+        System.out.print("loginId : ");
+        String loginId = Container.getSc().nextLine().trim();
 
-            if (!isLoginId) {
-                System.out.println("회원가입 되어있지 않은 ID 입니다.");
-                continue;
-            }
-            System.out.print("loginPw : ");
-            loginPw = Container.getSc().nextLine().trim();
-            if (loginPw.equals(loginPwById)) {
+        Member member = null;
+
+        for (Member members : members) {
+            if (loginId.equals(members.getLoginId())) {
+                member = members;
                 break;
-            } else {
-                System.out.println("PW가 틀렸습니다.");
             }
         }
-        loginStatus = true;
+
+        if (member == null) {
+            System.out.println("회원가입 되어있지 않은 ID 입니다.");
+            return;
+        }
+
+        System.out.print("loginPw : ");
+        String loginPw = Container.getSc().nextLine().trim();
+
+        if (!member.getLoginPw().equals(loginPw)) {
+            System.out.println("PW가 틀렸습니다.");
+            return;
+        }
+        loginedMember = member;
+
         System.out.println("로그인 되었습니다.");
     }
 
-
     public void doJoin() {
+
 
         int id = lastRegId + 1;
         String loginPw;

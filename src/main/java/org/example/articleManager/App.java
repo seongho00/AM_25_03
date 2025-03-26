@@ -12,15 +12,15 @@ public class App {
 
     public App() {
         memberController = new MemberController();
-        articleController = new ArticleController();
+        articleController = new ArticleController(memberController);
 
     }
 
     public void run() {
         System.out.println("==프로그램 시작==");
 
-        articleController.makeTestData();
         memberController.makeTestData();
+        articleController.makeTestData();
 
 
         while (true) {
@@ -39,10 +39,12 @@ public class App {
 
             if (cmdBits.length == 1) {
                 System.out.println("명령어 확인 필요");
+                continue;
             }
 
             String controllerName = cmdBits[0].trim();
             String actionMethodName = cmdBits[1].trim();
+
 
             switch (controllerName) {
                 case "article":
@@ -56,10 +58,11 @@ public class App {
                     System.out.println("올바른 명령어가 아닙니다.");
             }
 
-            if (memberController.getIsLoginStatus()) {
-                System.out.println("로그인이 필요한 서비스입니다.");
-                continue;
-            }
+//            if (!memberController.getIsLoginStatus()) {
+//                System.out.println("로그인이 필요한 서비스입니다.");
+//                continue;
+//            }
+
 
             controller.doAction(cmd, actionMethodName);
 
