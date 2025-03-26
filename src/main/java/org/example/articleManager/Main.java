@@ -1,8 +1,6 @@
-package org.example;
+package org.example.articleManager;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import org.example.Container;
 
 public class Main {
 

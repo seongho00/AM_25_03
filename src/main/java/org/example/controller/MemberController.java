@@ -1,4 +1,8 @@
-package org.example;
+package org.example.controller;
+
+import org.example.Container;
+import org.example.dto.Member;
+import org.example.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -135,7 +139,7 @@ public class MemberController extends Controller {
         System.out.println("회원가입 되었습니다");
     }
 
-    void makeTestData() {
+    public void makeTestData() {
         System.out.println("==테스트 데이터 생성==");
         members.add(new Member(1, Util.getNowStr(), "test1", "test1", "test1"));
         members.add(new Member(2, Util.getNowStr(), "test2", "test2", "test2"));

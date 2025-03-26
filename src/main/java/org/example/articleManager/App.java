@@ -1,4 +1,9 @@
-package org.example;
+package org.example.articleManager;
+
+import org.example.Container;
+import org.example.controller.Controller;
+import org.example.controller.ArticleController;
+import org.example.controller.MemberController;
 
 public class App {
     MemberController memberController;
