@@ -22,10 +22,6 @@ public class ArticleController extends Controller {
 
     public void doAction(String cmd, String actionMethodName) {
         this.cmd = cmd;
-        if (getLoginedMember() == null) {
-            System.out.println("로그인이 필요한 서비스입니다.");
-            return;
-        }
 
         switch (actionMethodName) {
             case "write":
@@ -59,9 +55,9 @@ public class ArticleController extends Controller {
         String title = Container.getSc().nextLine().trim();
         System.out.print("내용 : ");
         String body = Container.getSc().nextLine().trim();
-        Member member = getLoginedMember();
+        int memberId = loginedMember.getId();
 
-        Article article = new Article(id, regDate, updateDate, title, body, member);
+        Article article = new Article(id, regDate, updateDate, title, body, memberId);
         articles.add(article);
 
         System.out.println(id + "번 글이 작성되었습니다");
@@ -117,6 +113,7 @@ public class ArticleController extends Controller {
             System.out.println("해당 게시글은 없습니다");
             return;
         }
+
         System.out.println("번호 : " + foundArticle.getId());
         System.out.println("작성날짜 : " + foundArticle.getRegDate());
         System.out.println("수정날짜 : " + foundArticle.getUpdateDate());
@@ -137,7 +134,7 @@ public class ArticleController extends Controller {
             return;
         }
 
-        if (!Objects.equals(foundArticle.getMember(), getLoginedMember())) {
+        if (foundArticle.getMemberId() != loginedMember.getId()) {
             System.out.println("너가 작성한 게시글이 아니야");
             return;
         }
@@ -159,7 +156,7 @@ public class ArticleController extends Controller {
             return;
         }
 
-        if (!Objects.equals(foundArticle.getMember(), getLoginedMember())) {
+        if (foundArticle.getMemberId() != loginedMember.getId()) {
             System.out.println("너가 작성한 게시글이 아니야");
             return;
         }
@@ -190,9 +187,9 @@ public class ArticleController extends Controller {
 
     public void makeTestData() {
         System.out.println("==테스트 데이터 생성==");
-        articles.add(new Article(1, "2024-12-12 12:12:12", "2024-12-12 12:12:12", "제목123", "내용1", getMembers().get(0)));
-        articles.add(new Article(2, Util.getNowStr(), Util.getNowStr(), "제목27", "내용2", getMembers().get(1)));
-        articles.add(new Article(3, Util.getNowStr(), Util.getNowStr(), "제목1233", "내용3", getMembers().get(2)));
+        articles.add(new Article(1, "2024-12-12 12:12:12", "2024-12-12 12:12:12", "제목123", "내용1", 1));
+        articles.add(new Article(2, Util.getNowStr(), Util.getNowStr(), "제목27", "내용2", 2));
+        articles.add(new Article(3, Util.getNowStr(), Util.getNowStr(), "제목1233", "내용3", 3));
 
     }
 }

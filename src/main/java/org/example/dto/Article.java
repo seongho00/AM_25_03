@@ -6,23 +6,37 @@ public class Article {
     private String updateDate;
     private String title;
     private String body;
-    private Member member;
+    private int memberId;
+    private String memberName;
 
-    public Article(int id, String regDate, String updateDate, String title, String body, Member member) {
+    public Article(int id, String regDate, String updateDate, String title, String body, int memberId ) {
         this.id = id;
         this.regDate = regDate;
         this.updateDate = updateDate;
         this.title = title;
         this.body = body;
-        this.member = member;
+        this.memberId = memberId;
+
     }
 
-    public Member getMember() {
-        return member;
+    public void setMemberId(int memberId) {
+        this.memberId = memberId;
     }
 
-    public void setMember(Member member) {
-        this.member = member;
+    public String getMemberName() {
+        return memberName;
+    }
+
+    public void setMemberName(String memberName) {
+        this.memberName = memberName;
+    }
+
+    public int getMemberId() {
+        return memberId;
+    }
+
+    public void setMember(int memberId) {
+        this.memberId = memberId;
     }
 
     public String getUpdateDate() {

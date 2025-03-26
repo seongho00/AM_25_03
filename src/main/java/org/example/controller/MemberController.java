@@ -5,7 +5,6 @@ import org.example.dto.Member;
 import org.example.util.Util;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MemberController extends Controller {
 
@@ -42,10 +41,7 @@ public class MemberController extends Controller {
 
 
     public void doLogout() {
-        if (!isLogined()) {
-            System.out.println("이미 로그아웃중");
-            return;
-        }
+        loginedMember = null;
         System.out.println("로그아웃되었습니다.");
     }
 

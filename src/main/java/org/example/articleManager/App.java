@@ -52,7 +52,7 @@ public class App {
                 case "article/delete":
                 case "article/modify":
                 case "member/logout":
-                    if (Controller.isLogined() == false) {
+                    if (!Controller.isLogined()) {
                         System.out.println("로그인 필요해");
                         continue;
                     }
