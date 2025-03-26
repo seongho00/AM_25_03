@@ -9,22 +9,9 @@ import java.util.List;
 
 public class MemberController extends Controller {
 
-    public List<Member> getMembers() {
-        return members;
-    }
 
-    public Member getLoginedMember() {
-        return loginedMember;
-    }
-
-    private boolean isLogined() {
-        return loginedMember != null;
-    }
-
-    List<Member> members;
     private int lastRegId = 3;
     private String cmd;
-    private Member loginedMember;
 
 
     public void doAction(String cmd, String actionMethodName) {

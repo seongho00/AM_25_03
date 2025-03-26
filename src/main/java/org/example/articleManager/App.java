@@ -12,7 +12,7 @@ public class App {
 
     public App() {
         memberController = new MemberController();
-        articleController = new ArticleController(memberController);
+        articleController = new ArticleController();
 
     }
 
@@ -45,6 +45,31 @@ public class App {
             String controllerName = cmdBits[0].trim();
             String actionMethodName = cmdBits[1].trim();
 
+            String forLoginCheck = controllerName + "/" + actionMethodName;
+
+            switch (forLoginCheck) {
+                case "article/write":
+                case "article/delete":
+                case "article/modify":
+                case "member/logout":
+                    if (Controller.isLogined() == false) {
+                        System.out.println("로그인 필요해");
+                        continue;
+                    }
+                    break;
+            }
+
+            switch (forLoginCheck) {
+                case "member/login":
+                case "member/join":
+                    if (Controller.isLogined()) {
+                        System.out.println("로그아웃 필요해");
+                        continue;
+                    }
+                    break;
+            }
+
+
 
             switch (controllerName) {
                 case "article":
@@ -57,11 +82,6 @@ public class App {
                 default:
                     System.out.println("올바른 명령어가 아닙니다.");
             }
-
-//            if (!memberController.getIsLoginStatus()) {
-//                System.out.println("로그인이 필요한 서비스입니다.");
-//                continue;
-//            }
 
 
             controller.doAction(cmd, actionMethodName);

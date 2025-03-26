@@ -13,18 +13,16 @@ public class ArticleController extends Controller {
     List<Article> articles;
     int lastArticleId = 3;
     String cmd;
-    MemberController memberController;
 
 
-    public ArticleController(MemberController memberController) {
+    public ArticleController() {
         this.articles = new ArrayList<>();
-        this.memberController = memberController;
     }
 
 
     public void doAction(String cmd, String actionMethodName) {
         this.cmd = cmd;
-        if (memberController.getLoginedMember() == null) {
+        if (getLoginedMember() == null) {
             System.out.println("로그인이 필요한 서비스입니다.");
             return;
         }
@@ -61,7 +59,7 @@ public class ArticleController extends Controller {
         String title = Container.getSc().nextLine().trim();
         System.out.print("내용 : ");
         String body = Container.getSc().nextLine().trim();
-        Member member = memberController.getLoginedMember();
+        Member member = getLoginedMember();
 
         Article article = new Article(id, regDate, updateDate, title, body, member);
         articles.add(article);
@@ -139,7 +137,7 @@ public class ArticleController extends Controller {
             return;
         }
 
-        if (!Objects.equals(foundArticle.getMember(), memberController.getLoginedMember())) {
+        if (!Objects.equals(foundArticle.getMember(), getLoginedMember())) {
             System.out.println("너가 작성한 게시글이 아니야");
             return;
         }
@@ -161,7 +159,7 @@ public class ArticleController extends Controller {
             return;
         }
 
-        if (!Objects.equals(foundArticle.getMember(), memberController.getLoginedMember())) {
+        if (!Objects.equals(foundArticle.getMember(), getLoginedMember())) {
             System.out.println("너가 작성한 게시글이 아니야");
             return;
         }
@@ -192,9 +190,9 @@ public class ArticleController extends Controller {
 
     public void makeTestData() {
         System.out.println("==테스트 데이터 생성==");
-        articles.add(new Article(1, "2024-12-12 12:12:12", "2024-12-12 12:12:12", "제목123", "내용1", memberController.getMembers().get(0)));
-        articles.add(new Article(2, Util.getNowStr(), Util.getNowStr(), "제목27", "내용2", memberController.getMembers().get(1)));
-        articles.add(new Article(3, Util.getNowStr(), Util.getNowStr(), "제목1233", "내용3", memberController.getMembers().get(2)));
+        articles.add(new Article(1, "2024-12-12 12:12:12", "2024-12-12 12:12:12", "제목123", "내용1", getMembers().get(0)));
+        articles.add(new Article(2, Util.getNowStr(), Util.getNowStr(), "제목27", "내용2", getMembers().get(1)));
+        articles.add(new Article(3, Util.getNowStr(), Util.getNowStr(), "제목1233", "내용3", getMembers().get(2)));
 
     }
 }
