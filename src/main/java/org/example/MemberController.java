@@ -1,22 +1,20 @@
 package org.example;
 
-import javax.swing.plaf.metal.MetalRadioButtonUI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class MemberController {
     List<Member> members;
-    Scanner sc;
-    boolean loginStatus = false;
+    private boolean loginStatus = false;
+    int lastRegId = 3;
+
 
     public boolean getIsLoginStatus() {
         return loginStatus;
     }
 
-    public MemberController(Scanner sc) {
+    public MemberController() {
         this.members = new ArrayList<>();
-        this.sc = sc;
     }
 
 
@@ -32,7 +30,7 @@ public class MemberController {
         String loginPwById = "";
         while (true) {
             System.out.print("loginId : ");
-            loginId = sc.nextLine().trim();
+            loginId = Container.getSc().nextLine().trim();
 
             boolean isLoginId = false;
 
@@ -49,7 +47,7 @@ public class MemberController {
                 continue;
             }
             System.out.print("loginPw : ");
-            loginPw = sc.nextLine().trim();
+            loginPw = Container.getSc().nextLine().trim();
             if (loginPw.equals(loginPwById)) {
                 break;
             } else {
@@ -60,8 +58,8 @@ public class MemberController {
         System.out.println("로그인 되었습니다.");
     }
 
-    public void join() {
-        int lastRegId = 3;
+
+    public void doJoin() {
 
         int id = lastRegId + 1;
         String loginPw;
@@ -72,7 +70,7 @@ public class MemberController {
                 boolean isNewMemberId = true;
 
                 System.out.print("loginId : ");
-                loginId = sc.nextLine().trim();
+                loginId = Container.getSc().nextLine().trim();
 
 
                 for (Member member : members) {
@@ -90,14 +88,14 @@ public class MemberController {
 
         } else {
             System.out.print("loginId : ");
-            loginId = sc.nextLine().trim();
+            loginId = Container.getSc().nextLine().trim();
         }
 
         while (true) {
             System.out.print("loginPw : ");
-            loginPw = sc.nextLine().trim();
+            loginPw = Container.getSc().nextLine().trim();
             System.out.print("비밀번호 확인 : ");
-            String loginCheckPw = sc.nextLine().trim();
+            String loginCheckPw = Container.getSc().nextLine().trim();
             if (loginPw.equals(loginCheckPw)) {
                 break;
             }
@@ -105,7 +103,7 @@ public class MemberController {
         }
 
         System.out.print("name : ");
-        String name = sc.nextLine().trim();
+        String name = Container.getSc().nextLine().trim();
         String regDate = Util.getNowStr();
 
 
@@ -116,7 +114,7 @@ public class MemberController {
 
     void makeTestData() {
         System.out.println("==테스트 데이터 생성==");
-        members.add(new Member(1, "2024-12-12 12:12:12", "test1", "test1", "test1"));
+        members.add(new Member(1, Util.getNowStr(), "test1", "test1", "test1"));
         members.add(new Member(2, Util.getNowStr(), "test2", "test2", "test2"));
         members.add(new Member(3, Util.getNowStr(), "test3", "test3", "test3"));
 

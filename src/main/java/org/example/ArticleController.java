@@ -2,29 +2,26 @@ package org.example;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class ArticleController {
     List<Article> articles;
     int lastArticleId = 3;
-    Scanner sc;
 
 
-    public ArticleController(Scanner sc) {
+    public ArticleController() {
         this.articles = new ArrayList<>();
-        this.sc = sc;
     }
 
 
-    public void write() {
+    public void doWrite() {
         System.out.println("==게시글 작성==");
         int id = lastArticleId + 1;
         String regDate = Util.getNowStr();
         String updateDate = Util.getNowStr();
         System.out.print("제목 : ");
-        String title = sc.nextLine().trim();
+        String title = Container.getSc().nextLine().trim();
         System.out.print("내용 : ");
-        String body = sc.nextLine().trim();
+        String body = Container.getSc().nextLine().trim();
 
         Article article = new Article(id, regDate, updateDate, title, body);
         articles.add(article);
@@ -34,10 +31,9 @@ public class ArticleController {
     }
 
 
-
-    public void list(String cmd) {
+    public void showList(String cmd) {
         System.out.println("==게시글 목록==");
-        if (articles.size() == 0) {
+        if (articles.isEmpty()) {
             System.out.println("아무것도 없어");
             return;
         }
@@ -46,7 +42,7 @@ public class ArticleController {
 
         List<Article> forPrintArticles = articles;
 
-        if (searchKeyword.length() > 0) {
+        if (!searchKeyword.isEmpty()) {
             System.out.println("검색어 : " + searchKeyword);
             forPrintArticles = new ArrayList<>();
 
@@ -55,7 +51,7 @@ public class ArticleController {
                     forPrintArticles.add(article);
                 }
             }
-            if (forPrintArticles.size() == 0) {
+            if (forPrintArticles.isEmpty()) {
                 System.out.println("검색 결과 없음");
                 return;
             }
@@ -72,7 +68,7 @@ public class ArticleController {
         }
     }
 
-    public void detail(String cmd) {
+    public void showDetail(String cmd) {
         System.out.println("==게시글 상세보기==");
 
         int id = Integer.parseInt(cmd.split(" ")[2]);
@@ -91,7 +87,7 @@ public class ArticleController {
     }
 
 
-    public void delete(String cmd) {
+    public void doDelete(String cmd) {
         System.out.println("==게시글 삭제==");
 
         int id = Integer.parseInt(cmd.split(" ")[2]);
@@ -115,7 +111,7 @@ public class ArticleController {
         return null;
     }
 
-    public void modify(String cmd) {
+    public void doModify(String cmd) {
         System.out.println("==게시글 수정==");
 
         int id = Integer.parseInt(cmd.split(" ")[2]);
@@ -129,9 +125,9 @@ public class ArticleController {
         System.out.println("기존 제목 : " + foundArticle.getTitle());
         System.out.println("기존 내용 : " + foundArticle.getBody());
         System.out.print("새 제목 : ");
-        String newTitle = sc.nextLine().trim();
+        String newTitle = Container.getSc().nextLine().trim();
         System.out.print("새 내용 : ");
-        String newBody = sc.nextLine().trim();
+        String newBody = Container.getSc().nextLine().trim();
 
         foundArticle.setTitle(newTitle);
         foundArticle.setBody(newBody);

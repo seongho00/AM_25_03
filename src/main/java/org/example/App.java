@@ -1,21 +1,18 @@
 package org.example;
 
-import java.util.Scanner;
-
 public class App {
+    MemberController memberController;
+    ArticleController articleController;
 
     public App() {
+        memberController = new MemberController();
+        articleController = new ArticleController();
     }
 
     public void run() {
 
-        Scanner sc = new Scanner(System.in);
-        MemberController memberController = new MemberController(sc);
-        ArticleController articleController = new ArticleController(sc);
-
 
         System.out.println("==프로그램 시작==");
-
 
         articleController.makeTestData();
         memberController.makeTestData();
@@ -23,9 +20,9 @@ public class App {
 
         while (true) {
             System.out.print("명령어) ");
-            String cmd = sc.nextLine().trim();
+            String cmd = Container.getSc().nextLine().trim();
 
-            if (cmd.length() == 0) {
+            if (cmd.isEmpty()) {
                 System.out.println("명령어를 입력하세요");
                 continue;
             }
@@ -37,45 +34,41 @@ public class App {
                 memberController.login();
 
             } else if (cmd.equals("member join")) {
-                memberController.join();
+                memberController.doJoin();
 
 
             } else if (cmd.equals("logout")) {
                 memberController.logout();
 
-            }
-
-
-            if (memberController.getIsLoginStatus() && !cmd.equals("login")) {
+            } else if (memberController.getIsLoginStatus()) {
                 if (cmd.equals("article write")) {
-                    articleController.write();
+                    articleController.doWrite();
 
                 } else if (cmd.startsWith("article list")) {
-                    articleController.list(cmd);
+                    articleController.showList(cmd);
 
 
                 } else if (cmd.startsWith("article detail")) {
-                    articleController.detail(cmd);
+                    articleController.showDetail(cmd);
 
 
                 } else if (cmd.startsWith("article delete")) {
-                    articleController.delete(cmd);
+                    articleController.doDelete(cmd);
 
 
                 } else if (cmd.startsWith("article modify")) {
-                    articleController.modify(cmd);
+                    articleController.doModify(cmd);
 
                 } else {
-                    System.out.println("사용할 수 없는 명령어입니다");
+                    System.out.println("사용할 수 없는 명령어입니다.");
                 }
             } else {
-                System.out.println("로그인이 필요한 서비스입니다.");
+                System.out.println("로그인이 필요한 명령어입니다.");
             }
         }
 
 
         System.out.println("==프로그램 끝==");
-        sc.close();
     }
 
 
