@@ -3,15 +3,38 @@ package org.example;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MemberController {
-    List<Member> members;
-    private boolean loginStatus = false;
-    int lastRegId = 3;
-
+public class MemberController extends Controller {
 
     public boolean getIsLoginStatus() {
         return loginStatus;
     }
+
+    List<Member> members;
+    private boolean loginStatus = false;
+    int lastRegId = 3;
+    String cmd;
+
+    public void doAction(String cmd, String actionMethodName) {
+        this.cmd = cmd;
+
+        switch (actionMethodName) {
+            case "login":
+                login();
+                break;
+            case "logout":
+                logout();
+                break;
+            case "join":
+                doJoin();
+                break;
+
+            default:
+                System.out.println("Unknown action method");
+                break;
+        }
+
+    }
+
 
     public MemberController() {
         this.members = new ArrayList<>();
@@ -119,5 +142,6 @@ public class MemberController {
         members.add(new Member(3, Util.getNowStr(), "test3", "test3", "test3"));
 
     }
+
 
 }

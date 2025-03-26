@@ -3,15 +3,15 @@ package org.example;
 public class App {
     MemberController memberController;
     ArticleController articleController;
+    Controller controller = null;
 
     public App() {
         memberController = new MemberController();
         articleController = new ArticleController();
+
     }
 
     public void run() {
-
-
         System.out.println("==프로그램 시작==");
 
         articleController.makeTestData();
@@ -30,47 +30,36 @@ public class App {
                 break;
             }
 
-            if (cmd.equals("login")) {
-                memberController.login();
+            String[] cmdBits = cmd.split(" ");
 
-            } else if (cmd.equals("member join")) {
-                memberController.doJoin();
-
-
-            } else if (cmd.equals("logout")) {
-                memberController.logout();
-
-            } else if (memberController.getIsLoginStatus()) {
-                if (cmd.equals("article write")) {
-                    articleController.doWrite();
-
-                } else if (cmd.startsWith("article list")) {
-                    articleController.showList(cmd);
-
-
-                } else if (cmd.startsWith("article detail")) {
-                    articleController.showDetail(cmd);
-
-
-                } else if (cmd.startsWith("article delete")) {
-                    articleController.doDelete(cmd);
-
-
-                } else if (cmd.startsWith("article modify")) {
-                    articleController.doModify(cmd);
-
-                } else {
-                    System.out.println("사용할 수 없는 명령어입니다.");
-                }
-            } else {
-                System.out.println("로그인이 필요한 명령어입니다.");
+            if (cmdBits.length == 1) {
+                System.out.println("명령어 확인 필요");
             }
+
+            String controllerName = cmdBits[0].trim();
+            String actionMethodName = cmdBits[1].trim();
+
+            switch (controllerName) {
+                case "article":
+                    controller = articleController;
+                    break;
+
+                case "member":
+                    controller = memberController;
+                    break;
+                default:
+                    System.out.println("올바른 명령어가 아닙니다.");
+            }
+
+            if (memberController.getIsLoginStatus()) {
+                System.out.println("로그인이 필요한 서비스입니다.");
+                continue;
+            }
+
+            controller.doAction(cmd, actionMethodName);
+
+            System.out.println("==프로그램 끝==");
         }
-
-
-        System.out.println("==프로그램 끝==");
     }
-
-
 }
 
